@@ -3,7 +3,7 @@ const PRODUCTS = [
     {
         id: "colombia-nasa-wesx",
         title: "Colombia — Nasa Wesx",
-        image: "/static/products/Colombia_Nasa_Wesx.png",
+        image: "static/products/Colombia_Nasa_Wesx.png",
         badges: ["Limited +", "OMNI ROAST"],   // [badge1, badge2]
         processing: "Натуральна",
         taste: "Полуниця,  Чорниця,  Манго,  Клементин ",
@@ -44,7 +44,7 @@ const PRODUCTS = [
     {
         id: "el-salvador—el-pinar",
         title: "El Salvador — El Pinar",
-        image: "/static/products/El_Salvador_El_Pinar.png",
+        image: "static/products/El_Salvador_El_Pinar.png",
         badges: ["Specialty", "OMNI ROAST"],   // [badge1, badge2]
         processing: "Натуральна",
         taste: "Карамель,  Цитрус,  Сухофрукти,  Крем",
@@ -85,7 +85,7 @@ const PRODUCTS = [
     {
         id: "tanzania-ileya",
         title: "Tanzania - Ileya",
-        image: "/static/products/Tanzania_Ileya.png",
+        image: "static/products/Tanzania_Ileya.png",
         badges: ["Specialty", "FILTER ROAST"],
         processing: "Натуральна",
         taste: "Ягоди, Вино, Бузок",
@@ -125,7 +125,7 @@ const PRODUCTS = [
     {
         id: "kenya-kamuyu",
         title: "Kenya - Kamuyu",
-        image: "/static/products/KENYA_Kamuyu.png",
+        image: "static/products/KENYA_Kamuyu.png",
         badges: ["Specialty", "FILTER ROAST"],   // [badge1, badge2]
         processing: "Мита",
         taste: "Темні ягоди, Темний виноград, Червона смородина",
@@ -165,7 +165,7 @@ const PRODUCTS = [
     {
         id: "colomia-red-bourbon",
         title: "Colombia - Red Bourbon",
-        image: "/static/products/COLOMBIA_Red_Bourbon.png",
+        image: "static/products/COLOMBIA_Red_Bourbon.png",
         badges: ["Specialty", "Filter ROAST"],   
         processing: "Подвійна ферментація",
         taste: "Малина, Ревінь, Троянда",
@@ -207,7 +207,7 @@ const PRODUCTS = [
     {
         id: "colombia—tabi-finca-el-paraíso",
         title: "Colombia — Tabi, Finca El Paraíso",
-        image: "/static/products/Colombia_Tabi_Finca_El_Paraiso.png",
+        image: "static/products/Colombia_Tabi_Finca_El_Paraiso.png",
         badges: ["Specialty", "OMNI ROAST"],   
         processing: "Натуральна з контрольованою ферментацією",
         taste: "Сушені фініки,  Мед,  Темна вишня,  Жасмин,  Темний шоколад ",
@@ -247,7 +247,7 @@ const PRODUCTS = [
     {
         id: "colombia-quebraditas",
         title: "Colombia — Quebraditas",
-        image: "/static/products/Colombia_Quebraditas.png",
+        image: "static/products/Colombia_Quebraditas.png",
         badges: ["Limited +", "OMNI ROAST"],   // [badge1, badge2]
         processing: "Мита з інфузією ",
         taste: "Зелене яблуко, Кавун, Зефір, Лайм, Малина",
@@ -293,7 +293,7 @@ const PRODUCTS = [
     {
         id: "Colombia-el-paraiso",
         title: "Colombia — El Paraiso",
-        image: "/static/products/Colombia_El_Paraiso.png",
+        image: "static/products/Colombia_El_Paraiso.png",
         badges: ["Specialty", "FILTER ROAST"],   // [badge1, badge2]
         processing: "Honey",
         taste: "Стиглий персик, Соковита диня, Тропічні фрукти",
@@ -333,7 +333,7 @@ const PRODUCTS = [
     {
         id: "colombia-yellow-bourbon-quebraditas",
         title: "Colombia — Yellow Bourbon, Quebraditas",
-        image: "/static/products/Colombia_La_Esperanza.png",
+        image: "static/products/Colombia_La_Esperanza.png",
         badges: ["Specialty", "FILTER ROAST"],   // [badge1, badge2]
         processing: "Натуральна з термічним шоком",
         taste: "Апельсиновий цвіт Лічі, манго, Білий персик, Диня,  Оксамитове кремове тіло",
@@ -373,7 +373,7 @@ const PRODUCTS = [
     {
         id: "colombia-la-esperanza ",
         title: "Colombia — La Esperanza ",
-        image: "/static/products/Colombia_Yellow_Bourbon_Quebraditas.png",
+        image: "static/products/Colombia_Yellow_Bourbon_Quebraditas.png",
         badges: ["Specialty", "FILTER ROAST"],
         processing: "Мита",
         taste: "Абрикос / нектарин, Кривавий апельсин, Червоні ягоди, Медова солодкість",
@@ -413,7 +413,7 @@ const PRODUCTS = [
     {
         id: "ethiopia-gerba-96h-anaerobic",
         title: "Ethiopia — Gerba 96h Anaerobic",
-        image: "/static/products/Ethiopia_Gerba_96h_Anaerobic.png",
+        image: "static/products/Ethiopia_Gerba_96h_Anaerobic.png",
         badges: ["Specialty", "FILTER ROAST"],
         processing: "Натуральна",
         taste: "Полуничний лимонад, Кокос, Ананас, Манго, Тропічні фрукти",
@@ -453,7 +453,7 @@ const PRODUCTS = [
     {
         id: "ethiopia-hambela-wamena",
         title: "Ethiopia — Hambela Wamena   ",
-        image: "/static/products/Ethiopia_Hambela_Wamena.png",
+        image: "static/products/Ethiopia_Hambela_Wamena.png",
         badges: ["Specialty", "FILTER ROAST"],
         processing: "Мита",
         taste: "Чорний чай, Абрикос , Лимон , Квіти",
