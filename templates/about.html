@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style-about.css">
+    <link rel="stylesheet" href="/css/uiverse.css">
+    <title>About SSC</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&display=swap');
+    </style>
+</head>
+<body>
+<div class="preload">
+    <img class="preload-img" src="/static/logo_transparent.png" alt="">
+    <div class="loader">
+        <div class="blobs">
+            <div class="blob-center"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                    <feBlend in="SourceGraphic" in2="goo"></feBlend>
+                </filter>
+            </defs>
+        </svg>
+    </div>
+</div>
+<header>
+
+    <div class="decoration"></div>
+    <div class="top-bar">
+        <!-- Кнопка для мобільного меню -->
+        <button class="burger" id="burger">
+            <img  src="/static/menu_7689053.png" alt="list" class="burger-img">
+        </button>
+        <!-- Ліва частина: меню -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="/SSC/index.html" >Магазин</a></li>
+                <li><a href="/SSC/templates/about.html" class="active">Про нас</a></li>
+            </ul>
+        </nav>
+
+        <!-- Центр: логотип -->
+        <div class="logo">
+            <img src="/static/logo_transparent.png" alt="SSC">
+        </div>
+
+        <!-- Права частина: кошик -->
+        <div class="header-right">
+            <a href="#" class="cart-link">
+                <img src="/static/basket.png" alt="Кошик">
+                <span class="cart-count">2</span>
+            </a>
+        </div>
+    </div>
+    <div class="side-menu" id="sideMenu">
+        <button class="close-btn" id="closeMenu">✖</button>
+        <ul>
+            <li><a href="/SSC/index.html">Магазин</a></li>
+            <li><a href="/SSC/templates/about.html">Про нас</a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="wrapper">
+
+
+
+
+    <section class="main">
+        <div class="main-left-top">
+<!--            <div class="main-text">-->
+                <h2 class="mg-10-bot">Про нас</h2>
+<!--            </div>-->
+            <div class="navigator margin-bottom">
+                <a href="#owner">Засновник</a>
+                <a href="#team">Команда</a>
+                <a href="#optional">Додатково</a>
+            </div>
+            <div class="contacts">
+                <div class="contacts-info">
+                    <p>Львів, Україна </p>
+                    <p class="style">
+                        <a href="tel:+380670000000">+38 067 000 00 00</a>
+                    </p>
+                </div>
+
+                <div class="payment-icons">
+                    <a href="https://www.instagram.com/ssc_lviv/">
+                        <img src="/static/instagram.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="main">
+        <div class="main-left">
+            <div class="main-text">
+                <h2>Studio Specialty Coffee </h2>
+
+
+                <h3 class="margin-bottom">Місія</h3>
+                <p >Створювати нову кавову культуру в Україні: чесну, відкриту, живу.
+                    Давати людям змогу пити каву свідомо — без цукру, без компромісів, з повагою до зерна та гостя.<br>
+                    </p>
+                <h3 class="margin-bottom">Бачення</h3>
+                <p >Бути провідним центром навчання та культури спешлті кави.
+                    Відкрити школу SCA у Львові, стати платформою для розвитку нових бариста та лідерів.
+                </p>
+                <p class="margin-top">Це місце, де не домінує гонитва за прибутком, а панує любов до справи і бажання створити ідеальне середовище для розвитку.</p>
+            </div>
+        </div>
+        <div class="main-right ">
+            <div class="main-logo">
+                <img src="/static/logo_big.png" alt="Banner">
+            </div>
+        </div>
+
+    </section>
+    <section id="owner"  class="main">
+        <div class="main-right">
+            <div class="main-photo">
+                <img src="/static/Owner.jpg" alt="Banner">
+            </div>
+        </div>
+        <div class="main-left">
+            <div class="main-text">
+                <h2>ГОНЧАРУК СТАНІСЛАВ ЛЮБОМИРОВИЧ</h2>
+                <h3 class="margin-bottom"> Засновник Studio of Specialty Coffee | Кавовий ментор і практик | Майбутній AST-тренер SCA</h3>
+                <p class="con-quote margin-bottom">“Я не просто варю каву. Я створюю простір, де кожна чашка, кожен момент і кожна людина мають значення.”</p>
+                <h3>10+ років у каві: шлях, що формує місію</h3>
+                <p>Мене звати Станіслав Гончарук, і я працюю в кавовій індустрії вже понад 10 років.<br>
+                   Протягом цього часу я пройшов шлях від бариста до засновника власного бренду, ментора, розробника навчальних програм та стратегічного керівника.<br>
+                   Цей досвід – не лише про технології приготування напою, але й про розуміння сутності кавової культури, де важливі не тільки якість, але й людські цінності.</p>
+            </div>
+        </div>
+
+    </section>
+    <section id="team" class="main">
+        <div class="main-left">
+            <h2>Команда, що перевершує очікування</h2>
+            <p>
+                Моя найбільша гордість — це люди, з якими я працюю. Особливо хочу відзначити моїх учнів Андріана та Володимира. За 1,5–2 роки вони не просто досягли мого рівня, а в деяких аспектах навіть перевершили мене. Це підтверджує, що щира передача знань і системний підхід дозволяють розвивати таланти і створювати справжніх майстрів своєї справи.
+            </p>
+            <h2>Що ми будуємо разом</h2>
+            <p>Studio of Specialty Coffee — це більше, ніж кав’ярня.
+                Це місце зустрічі ідей, платформа для навчання та розвиток нової кавової культури.
+                Ми створюємо простір, де кожна чашка кави розповідає свою історію, де кожна людина відчуває себе частиною великої спільноти, де знання передаються щиро, а успіх вимірюється не лише прибутком, а задоволенням від роботи.
+            </p>
+        </div>
+        <div class="main-right">
+            <div class="main-photo">
+                <img src="/static-opt/team.png" alt="Banner">
+            </div>
+        </div>
+    </section>
+<!--    <section class="main">-->
+<!--        <div class="main-right">-->
+<!--            <div class="main-photo">-->
+<!--                <img src="/static/ilustration.jpg" alt="Banner">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="main-left">-->
+<!--            <h2>Що ми будуємо разом</h2>-->
+<!--            <p>Studio of Specialty Coffee — це більше, ніж кав’ярня.-->
+<!--                Це місце зустрічі ідей, платформа для навчання та розвиток нової кавової культури.-->
+<!--                Ми створюємо простір, де кожна чашка кави розповідає свою історію, де кожна людина відчуває себе частиною великої спільноти, де знання передаються щиро, а успіх вимірюється не лише прибутком, а задоволенням від роботи.-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </section>-->
+
+
+            <section id="optional" class="about-bottom">
+                <div class="decoration-1"></div>
+                <div class="about-section">
+                    <div class="about-icon">
+                        <img src="/static/coffee_1046887.png" alt="coffee">
+                    </div>
+                    <h3>КАВА ТА ВЛАСТИВОСТІ</h3>
+                    <p>
+                        У нашій кав’ярні ми використовуємо лише найкращу зернову каву, а обсмажування виконуємо самостійно за найвищими стандартами specialty coffee для ідеального смаку в кожній чашці.
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <div class="about-icon">
+                        <img src="/static/barista_4235115.png" alt="coffee">
+                    </div>
+                    <h3>НАШІ ПРИНЦИПИ</h3>
+                    <p>
+                        У нас цінують якість, прозорість і розвиток. Без цукру — з повагою до смаку. Кожен у команді зростає, а сервіс і атмосфера створюють місце, де хочеться бути щодня.
+                    </p>
+                </div>
+
+
+                <div class="about-section">
+                    <div class="about-icon">
+                        <img src="/static/latte-art_13888302.png" alt="coffee">
+                    </div>
+                    <h3>ОСВІТА ТА РОЗВИТОК</h3>
+                    <p>
+                        Я розробив власний внутрішній курс барист, побудований за міжнародними стандартами Specialty Coffee Association (SCA). Мої плани включають офіційну сертифікацію за програмою AST SCA
+                    </p>
+                </div>
+            </section>
+</div>
+
+<!--<div class="about-location-text">-->
+
+
+<!--    <div>-->
+<!--        <h3>НАШЕ РОЗТАШУВАННЯ</h3>-->
+<!--        <p>Ми знаходимося за адресою:<br> вул. Прикладна, 123, Київ</p>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <p>Ми знаходимося за адресою:<br> вул. Прикладна, 123, Київ</p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<footer>
+
+
+    <section id="contacts">
+        <div class="footer-left">
+            <h2 class="footer-h2">Наше розташування</h2>
+            <div class="map-container">
+                <!-- Вставте ваш iframe з Google Maps сюди -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2573.714973880454!2d23.990171676021653!3d49.82902203191367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473ae77facb3b8a9%3A0xc2e91678263b4f10!2z0LrQvtGA0L_Rg9GBIDXQsCwg0YPQuy4g0JPQtdGA0L7QtdCyINCj0J_QkCwgNzMsINCb0YzQstC-0LIsINCb0YzQstC-0LLRgdC60LDRjyDQvtCx0LvQsNGB0YLRjCwgNzkwMDA!5e0!3m2!1sru!2sua!4v1743082905747!5m2!1sru!2sua"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <!--                <div id="map" style="width:100%; height:400px;"></div>-->
+                <!--                <gmp-map center="49.829105377197266,23.992822647094727" zoom="14" map-id="DEMO_MAP_ID">-->
+                <!--                    <gmp-advanced-marker position="49.829105377197266,23.992822647094727" title="My location"></gmp-advanced-marker>-->
+                <!--                </gmp-map>-->
+            </div>
+            <p>Вул. Героїв УПА, 73, Львів</p>
+        </div>
+        <div class="footer-content-right">
+            <h2 class="footer-h2">Бажаєте пройти навчання?</h2>
+            <div class="footer-right">
+
+
+                <div class="input-group">
+                    <label class="label">Phone number</label>
+                    <input autocomplete="off" name="phone" id="Email" class="input" type="email">
+                    <div></div>
+                </div>
+                <div class="input-group">
+                    <label class="label">Your message</label>
+                    <input type="text"  class="input-text">
+                    <div></div>
+                </div>
+                <button class="submit-button">Submit</button>
+            </div>
+
+        </div>
+
+
+
+    </section>
+    <div class="footer-content">
+        <div class="contacts-footer">
+            <div class="contacts-info">
+                <p>Львів, Україна </p>
+                <p class="style">
+                    <a href="tel:+380637926887">+38 063 7926 887</a>
+                </p>
+            </div>
+
+            <div class="payment-icons">
+                <a href="https://www.instagram.com/ssc_lviv/">
+                    <img src="/static/instagram.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<!-- CART: overlay + drawer -->
+<div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+<aside id="cart-drawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-label="Кошик">
+    <header class="cart-header">
+        <h3>Кошик</h3>
+        <button id="cart-close" class="cart-close" aria-label="Закрити">✖</button>
+    </header>
+
+    <div id="cart-items" class="cart-items">
+        <!-- Сюди рендеряться позиції -->
+    </div>
+
+    <footer class="cart-footer">
+        <div class="cart-summary">
+            <div class="cart-row">
+                <span>Сума</span>
+                <strong id="cart-subtotal">0 UAH</strong>
+            </div>
+        </div>
+        <div class="cart-actions">
+            <button id="cart-clear" class="cart-btn ghost">Очистити</button>
+            <button id="cart-checkout" class="cart-btn primary">Оформити</button>
+        </div>
+    </footer>
+</aside>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>

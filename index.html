@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>SSC</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/uiverse.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&display=swap');*/
+
+        /*.font {*/
+        /*    font-family: 'Unbounded', sans-serif ;*/
+
+        /*}*/
+    </style>
+</head>
+
+
+<body>
+<div class="red-circle">
+    <img  src="static/red_circle.svg" alt="">
+</div>
+
+
+<div class="preload">
+    <img class="preload-img" src="/static/logo_transparent.png" alt="">
+    <div class="loader">
+        <div class="blobs">
+            <div class="blob-center"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                    <feBlend in="SourceGraphic" in2="goo"></feBlend>
+                </filter>
+            </defs>
+        </svg>
+    </div>
+</div>
+
+
+
+    <!-- ШАПКА САЙТУ -->
+    <header>
+
+        <div class="decoration"></div>
+        <div class="top-bar">
+            <!-- Кнопка для мобільного меню -->
+            <button class="burger" id="burger">
+                <img  src="/static/menu_7689053.png" alt="list" class="burger-img">
+            </button>
+            <!-- Ліва частина: меню -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/SSC/index.html" class="active">Магазин</a></li>
+                    <li><a href="/SSC/templates/about.html">Про нас</a></li>
+                </ul>
+            </nav>
+
+            <!-- Центр: логотип -->
+            <div class="logo">
+                <img src="/static/logo_transparent.png" alt="SSC">
+            </div>
+
+            <!-- Права частина: кошик -->
+            <div class="header-right">
+                <a href="#" class="cart-link">
+                    <img src="/static/basket.png" alt="Кошик">
+                    <span class="cart-count">2</span>
+                </a>
+            </div>
+        </div>
+        <div class="side-menu" id="sideMenu">
+            <button class="close-btn" id="closeMenu">✖</button>
+            <ul>
+                <li><a href="/SSC/index.html">Магазин</a></li>
+                <li><a href="/SSC/templates/about.html">Про нас</a></li>
+            </ul>
+        </div>
+    </header>
+
+
+<div class="wrapper">
+
+    <!-- ГОЛОВНИЙ БАНЕР (HERO) -->
+    <section class="hero">
+        <!-- Тут вставте своє фонове зображення або банер -->
+        <div class="hero-text">
+            <h1  class="font-benzin">Studio Specialty<br> Coffee</h1>
+        </div>
+<!--        <div class="hero-image">-->
+<!--            <img src="/static/bean.png" alt="Hero Banner">-->
+<!--        </div>-->
+    </section>
+
+    <!-- КАТЕГОРІЇ ТОВАРІВ -->
+    <section id="product-categories" class="categories">
+        <div class="cat-item" data-cat="filter">
+            <img src="/static/coffee-filter_16741809.png" alt="Фільтр">
+            <span>ФІЛЬТР</span>
+        </div>
+        <div class="cat-item" data-cat="espresso">
+            <img src="/static/coffee-machine_2098262.png" alt="Еспресо">
+            <span>ЕСПРЕСО</span>
+        </div>
+        <div class="cat-item" data-cat="prices">
+            <img src="/static/menu_6178984.png" alt="Ціни">
+            <span>ЦІНИ</span>
+        </div>
+    </section>
+    <!-- Роздільна лінія під категоріями -->
+    <hr class="divider">
+
+    <!-- БЛОК З ТОВАРАМИ -->
+    <section class="products-section">
+        <h2 class="font-rubic">Популярні позиції</h2>
+
+        <!-- ШАБЛОН КАРТКИ (не відображається напряму) -->
+        <template id="product-template">
+            <div class="product-card flip" data-product-id="">
+                <div class="flip-inner" aria-live="polite">
+                    <!-- FRONT -->
+                    <div class="flip-face flip-front" aria-label="Лицьова сторона картки">
+                        <div class="media-wrap">
+                            <img src="" alt="" class="product-image" loading="lazy">
+                            <button class="btn-more" type="button" aria-label="Детальніше про каву">Детальніше</button>
+                            <div class="badges">
+                                <span class="badge-1 badge-specialty"></span>
+                                <span class="badge-2 badge-omni"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-info">
+                            <h3 class="product-title font-benzin"></h3>
+
+                            <div class="product-detail">
+                                <p class="label font-rubic">Обробка</p>
+                                <p class="value font-rubic" data-field="processing"></p>
+                            </div>
+
+                            <div class="product-detail">
+                                <p class="label font-rubic">Смаковий профіль</p>
+                                <p class="value font-rubic" data-field="taste"></p>
+                            </div>
+
+                            <div class="selectors">
+                                <span class="weight font-rubic"></span>
+                                <label>
+                                    <select class="grind-select font-rubic" aria-label="Ступінь помелу"></select>
+                                </label>
+                            </div>
+
+                            <div class="price-row">
+                                <div>
+                                    <p class="old-price">Звичайна ціна</p>
+                                    <p class="price strike" data-field="oldPrice"></p>
+                                </div>
+                                <div>
+                                    <p class="price" data-field="price"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-control">
+                            <div class="quantity-box" aria-label="Кількість">
+                                <button class="quantity-btn">−</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                            <button class="add-to-cart font-rubic">У КОШИК</button>
+                        </div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="flip-face flip-back" aria-hidden="true" aria-label="Детальна інформація про каву">
+                        <div class="back-header">
+                            <h4 class="font-benzin back-align"></h4>
+                        </div>
+
+                        <div class="back-body font-rubic" data-field="backHtml">
+                            <!-- сюди підставимо HTML з описом ферми/методів/порад -->
+                        </div>
+
+                        <div class="back-footer">
+                            <button class="btn-back ghost" type="button">Повернутись</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- СІТКА КУДИ РЕНДЕРИТЬСЯ ВСЕ -->
+        <div class="products-grid" id="products-grid"></div>
+    </section>
+
+
+</div>
+<!-- ПІДВАЛ САЙТУ -->
+<footer>
+
+
+    <section id="contacts">
+        <div class="footer-left">
+            <h2 class="footer-h2">Наше розташування</h2>
+            <div class="map-container">
+                <!-- Вставте ваш iframe з Google Maps сюди -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2573.714973880454!2d23.990171676021653!3d49.82902203191367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473ae77facb3b8a9%3A0xc2e91678263b4f10!2z0LrQvtGA0L_Rg9GBIDXQsCwg0YPQuy4g0JPQtdGA0L7QtdCyINCj0J_QkCwgNzMsINCb0YzQstC-0LIsINCb0YzQstC-0LLRgdC60LDRjyDQvtCx0LvQsNGB0YLRjCwgNzkwMDA!5e0!3m2!1sru!2sua!4v1743082905747!5m2!1sru!2sua"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!--                <div id="map" style="width:100%; height:400px;"></div>-->
+<!--                <gmp-map center="49.829105377197266,23.992822647094727" zoom="14" map-id="DEMO_MAP_ID">-->
+<!--                    <gmp-advanced-marker position="49.829105377197266,23.992822647094727" title="My location"></gmp-advanced-marker>-->
+<!--                </gmp-map>-->
+            </div>
+            <p>Вул. Героїв УПА, 73, Львів</p>
+        </div>
+        <div class="footer-content-right">
+            <h2 class="footer-h2">Бажаєте додаткові деталі?</h2>
+            <div class="footer-right">
+
+
+                <div class="input-group">
+                    <label class="label">Phone number</label>
+                    <input autocomplete="off" name="phone" id="Email" class="input" type="email">
+                    <div></div>
+                </div>
+                <div class="input-group">
+                    <label class="label">Your message</label>
+                    <input type="text"  class="input-text">
+                    <div></div>
+                </div>
+                <button class="submit-button">Submit</button>
+            </div>
+
+        </div>
+
+
+
+    </section>
+    <div class="footer-content">
+        <div class="contacts-footer">
+            <div class="contacts-info">
+                <p>Львів, Україна </p>
+                <p class="style">
+                    <a href="tel:+380637926887">+38 063 7926 887</a>
+                </p>
+            </div>
+
+            <div class="payment-icons">
+                <a href="https://www.instagram.com/ssc_lviv/">
+                <img src="/static/instagram.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- CART: overlay + drawer -->
+<div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+<aside id="cart-drawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-label="Кошик">
+    <header class="cart-header">
+        <h3>Кошик</h3>
+        <button id="cart-close" class="cart-close" aria-label="Закрити">✖</button>
+    </header>
+
+    <div id="cart-items" class="cart-items">
+        <!-- Сюди рендеряться позиції -->
+    </div>
+
+    <footer class="cart-footer">
+        <div class="cart-summary">
+            <div class="cart-row">
+                <span>Сума</span>
+                <strong id="cart-subtotal">0 UAH</strong>
+            </div>
+        </div>
+        <div class="cart-actions">
+            <button id="cart-clear" class="cart-btn ghost">Очистити</button>
+            <button id="cart-checkout" class="cart-btn primary">Оформити</button>
+        </div>
+    </footer>
+</aside>
+
+
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCitV-T2EMfJTp7mU56k7YikGU3Z5Ug4LU"></script>-->
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCitV-T2EMfJTp7mU56k7YikGU3Z5Ug4LU&callback=initMap&libraries=marker&v=beta&solution_channel=GMP_CCS_infowindows_v1"
+            defer
+    ></script>
+
+<script src="js/products.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+</html>
