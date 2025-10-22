@@ -61,7 +61,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/SSC/static/red_circle.png");
+    background-image: url("/static/red_circle.png");
     background-size: 1200px;
     background-repeat: no-repeat;
     opacity: 0.05; /* Зменшення прозорості */
