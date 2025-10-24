@@ -100,7 +100,7 @@ body {
     .red-circle img{ transform:translate(10%, 30dvh); width: max(100dvw, 50dvh); }
 }
 @media (max-width: 480px){
-    .red-circle img{ transform: translate(10%, 29.5dvh); width: max(100dvw, 50dvh); }
+    .red-circle img{ transform: translate(10%, 22dvh); width: max(100dvw, 50dvh); }
 }
 
 body::after {
@@ -1560,6 +1560,36 @@ footer {
         justify-content: start;
     }
 }
+
+/* === iOS cart fixes (safe area + справжня висота) === */
+.cart-drawer{
+    height: 100dvh;                     /* коректна висота на iOS */
+    /* fallback, якщо 100dvh не підтримується */
+    height: 100svh;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.cart-header{
+    padding-top: calc(16px + env(safe-area-inset-top, 0));
+}
+
+.cart-items{
+    -webkit-overflow-scrolling: touch;  /* плавний скрол на iOS */
+    overscroll-behavior: contain;       /* не «тягне» підкладку */
+    padding-bottom: 12px;               /* запас під footer */
+}
+
+.cart-footer{
+    position: sticky;                   /* завжди видимий, не ховається */
+    bottom: 0;
+    background: #fff;
+    box-shadow: 0 -6px 12px rgba(0,0,0,.06);
+    padding: 12px 18px max(16px, env(safe-area-inset-bottom, 0)) 18px;
+    z-index: 1;
+}
+/* блокування прокрутки фону, коли кошик відкритий */
+body.no-scroll { overflow: hidden; touch-action: none; }
+
 /* -------- АДАПТИВНІСТЬ -------- */
 @media (max-width: 768px) {
 

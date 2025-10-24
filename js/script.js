@@ -248,6 +248,7 @@ window.addEventListener('load', function() {
         drawer.classList.add('active');
         overlay.setAttribute('aria-hidden', 'false');
         drawer.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('no-scroll');     // ← додано
     };
     const closeDrawer = () => {
         if (!overlay || !drawer) return;
@@ -255,7 +256,9 @@ window.addEventListener('load', function() {
         drawer.classList.remove('active');
         overlay.setAttribute('aria-hidden', 'true');
         drawer.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('no-scroll');  // ← додано
     };
+
 
     /* ===== Init ===== */
     Cart.load();
