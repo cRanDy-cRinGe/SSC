@@ -1137,6 +1137,66 @@ body::after {
     }
     .grind-select, .weight { max-width: 100%; }
 }
+/* === 1) Заголовок картки — не обрізати, коректні переноси === */
+.product-title{
+    /* замість 2 — даємо запас для довших назв */
+    -webkit-line-clamp: 3;
+    line-height: 1.22;
+    word-break: break-word;   /* розрив довгих слів/дефісів */
+    overflow-wrap: anywhere;  /* Safari iOS */
+    hyphens: auto;            /* якщо є мова сторінки, дасть гарні переноси */
+    margin-right: 2px;        /* мікрозазор проти “з’їдання” шедоу праворуч */
+}
+
+/* на дуже вузьких екранах можна лишити 2 рядки — за бажанням */
+@media (max-width: 360px){
+    .product-title{ -webkit-line-clamp: 2; }
+}
+
+/* === 2) Низ картки — кнопка впритул до краю і по всій ширині === */
+/* робимо cart-control як сітку, щоб не було субпіксельного зазору */
+.product-card.flip .flip-front{
+    display: grid;
+    grid-template-rows: auto 1fr auto;     /* media | info | cart */
+}
+.product-card.flip .cart-control{
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: 120px 1fr;      /* ліворуч кількість, праворуч кнопка */
+    align-items: stretch;
+    gap: 0;
+    padding: 0;                            /* прибираємо внутрішні відступи */
+    width: 100%;
+    border-top: 1px solid #eee;
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;                      /* щоб радіус спрацював по контуру */
+}
+
+.product-card.flip .quantity-box{
+    grid-column: 1;
+    padding: 12px 0;
+    margin: 0;
+    border-radius: 0;                       /* радіус тепер у контейнера */
+}
+
+.product-card.flip .add-to-cart{
+    grid-column: 2;
+    width: 100%;
+    max-width: none;                        /* перекрити старі 220px */
+    min-width: 0;
+    height: 56px;                           /* стабільна висота, = лівому блоку */
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 16px;
+    margin: 0;
+    border-radius: 0;                        /* радіус у контейнера */
+    box-sizing: border-box;
+}
+
+/* невеликий косметичний штрих для ціни */
+.price-row{ margin: 0 0 10px; }
+
+/* картиночка без “бейслайнового” зазору */
+.product-card .media-wrap img{ display:block; width:100%; height:auto; }
 
 
 /* -------- ПІДВАЛ -------- */
