@@ -537,36 +537,38 @@ body::after {
     color: #333;
 }
 
-@media (max-width: 768px) {
-    .categories {
-        justify-content: center;
-        gap: 00px 15px;
-
+/* ===== 2×2 категорії на вузьких екранах ===== */
+@media (max-width: 768px){
+    .categories{
+        display: grid;                         /* замість flex */
+        grid-template-columns: repeat(2, minmax(120px, 1fr)); /* 2 колонки */
+        gap: 16px;
+        justify-items: center;                 /* центруємо плитки */
     }
 
-    .cat-item {
-        flex: 0 0 calc(33.33% - 20px);
-        margin-bottom: 2vh;
-
-    }
-
-    .cat-item:nth-child(n+4) {
-        padding: 15px 40px;
-        flex: 0 0 calc(33.33% - 20px);
+    .cat-item{
+        flex: unset;                           /* скидаємо flex-базу 33.33% */
+        width: 100%;                           /* плитка заповнює свою колонку */
+        max-width: 200px;
+        padding: 16px 20px;
     }
 }
-@media (max-width: 420px) {
-    .categories {
-        gap: 15px;
-        justify-items: center;
-        margin: 20px 0;
+
+@media (max-width: 420px){
+    .categories{
+        grid-template-columns: repeat(2, minmax(110px, 1fr));
+        gap: 14px;
     }
 
-    .cat-item {
-        width: 100px;
-        padding: 15px 30px;
+    .cat-item{
+        max-width: 180px;
+        padding: 14px 18px;
     }
+
+    .cat-item img{ width: 36px; height: 36px; }
+    .cat-item span{ font-size: .88rem; }
 }
+
 
 /* Роздільна лінія */
 .divider {
