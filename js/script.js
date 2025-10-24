@@ -1,7 +1,11 @@
 function attachProductObserver() {
     const revealProductCards = document.querySelectorAll('.product-card');
-    const productObserverOptions = { threshold: 0.12 };
-    const revealOnScrollProduct = new IntersectionObserver((entries, observer) => {
+    if (!('IntersectionObserver' in window)) {
+        revealProductCards.forEach(el => el.classList.add('active'));
+        return;
+    }
+    const productObserverOptions = { threshold: 0.12, rootMargin: '0px 0px -10% 0px' };
+    const io = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
@@ -9,8 +13,18 @@ function attachProductObserver() {
             }
         });
     }, productObserverOptions);
-    revealProductCards.forEach(el => revealOnScrollProduct.observe(el));
+    revealProductCards.forEach(el => io.observe(el));
+
+    // простий резерв — активуємо видимі картки під час скролу
+    const scanVisible = () => {
+        document.querySelectorAll('.product-card:not(.active)').forEach(el => {
+            const r = el.getBoundingClientRect();
+            if (r.top < innerHeight * 0.9 && r.bottom > 0) el.classList.add('active');
+        });
+    };
+    document.addEventListener('scroll', scanVisible, { passive: true });
 }
+
 
 
 
@@ -110,6 +124,23 @@ window.addEventListener('load', function() {
     }
 });
 
+window.addEventListener('load', function() {
+    const preloader = document.querySelector('.preload');
+    const launch = () => {
+        if (preloader) preloader.style.display = 'none';
+        startAnimations();
+    };
+
+    if (preloader) {
+        preloader.classList.add('fade-out');
+        let fired = false;
+        const done = () => { if (!fired) { fired = true; launch(); } };
+        preloader.addEventListener('transitionend', done, { once: true });
+        setTimeout(done, 900);   // Fallback для iOS: гарантуємо запуск
+    } else {
+        startAnimations();
+    }
+});
 
 /* ===== CART LOGIC ===== */
 (function () {

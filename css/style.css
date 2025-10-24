@@ -74,36 +74,35 @@ body {
 
 /*}*/
 
-.red-circle {
+.red-circle{
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
 }
-.red-circle img {
-    position: relative;
-    top: 70vh;
-    width: 1200px;
 
+/* саме коло (png/svg) — центруємо по Х, зсуваємо по Y */
+.red-circle img{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 38dvh);
+    /* діаметр: завжди трохи більший за вьюпорт, щоб не було обрізання */
+    width: clamp(600px, max(75dvw, 75dvh), 1000px);
+    will-change: transform;
 }
-@media (max-width: 768px) {
-    .red-circle img {
-        top:    48vh;
 
-    }
+/* fallback, якщо dvh не підтримується */
+@supports not (height: 100dvh){
+    .red-circle img{ transform: translate(-50%, 52vh); width: clamp(600px, 100vw, 1000px); }
 }
-@media (max-width: 480px) {
-    .red-circle img {
-        top:    48vh;
-    }
+@media (max-width: 768px){
+    .red-circle img{ transform:translate(10%, 30dvh); width: max(100dvw, 50dvh); }
+}
+@media (max-width: 480px){
+    .red-circle img{ transform: translate(10%, 29.5dvh); width: max(100dvw, 50dvh); }
+}
 
-}
 body::after {
     content: "";
     position: fixed;
@@ -484,10 +483,11 @@ body::after {
     .hero-text {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
                     0 0 4px rgba(255, 255, 255, 0.49);
-        font-size: 2rem;
+        font-size: 1.4rem;
     }
 
 }
+
 @media (max-width: 520px) {
     .hero-text {
         font-size: 1rem;
@@ -576,7 +576,13 @@ body::after {
     border-top: 2px solid var(--red);
     border-radius: 2em;
 }
+@media screen and (max-width: 768px) {
+    .divider {
+        border-top: 2px solid black ;
+        width: 95%;
+    }
 
+}
 /* -------- СЕКЦІЯ ТОВАРІВ -------- */
 .products-section {
     max-width: 1200px;

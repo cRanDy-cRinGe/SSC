@@ -514,6 +514,8 @@ body::before {
     .main-text h3 {
         font-size: 1rem;
         white-space: wrap;
+        margin-top: 4vh;
+        margin-bottom: 2vh;
     }
     .main-left p, .main-text p {
         font-size: 0.9rem;
