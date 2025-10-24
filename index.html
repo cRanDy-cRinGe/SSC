@@ -294,11 +294,72 @@
             </div>
         </div>
         <div class="cart-actions">
-            <button id="cart-clear" class="cart-btn ghost">Очистити</button>
+            <button id="cart-clear" style="color: black" class="cart-btn ghost">Очистити</button>
             <button id="cart-checkout" class="cart-btn primary">Оформити</button>
         </div>
     </footer>
 </aside>
+
+
+<!-- CHECKOUT: drawer -->
+<aside id="checkout-drawer" class="cart-drawer checkout" aria-hidden="true" role="dialog" aria-label="Оформлення замовлення">
+    <header class="cart-header">
+        <button id="checkout-back" class="cart-close" aria-label="Назад до кошика">←</button>
+        <h3 style="margin-left:8px;">Оформлення</h3>
+        <button id="checkout-close" class="cart-close" aria-label="Закрити">✖</button>
+    </header>
+
+    <div class="checkout-body">
+        <form id="checkout-form" class="checkout-form">
+            <div class="field">
+                <label for="ch-name">Ім’я та прізвище</label>
+                <input id="ch-name" name="name" type="text" placeholder="Іван Іваненко" required>
+            </div>
+            <div class="field">
+                <label for="ch-phone">Телефон</label>
+                <input id="ch-phone" name="phone" type="tel" inputmode="tel" placeholder="+380" required>
+            </div>
+            <div class="field">
+                <label for="ch-method">Доставка</label>
+                <select id="ch-method" name="method">
+                    <option value="nova">Нова Пошта (відділення)</option>
+                    <option value="courier">Кур’єр по Львову</option>
+                    <option value="pickup">Самовивіз</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="city-input">Місто</label>
+                <div class="combo" id="city-combo">
+                    <input id="city-input" type="text" placeholder="Місто" autocomplete="off">
+                    <input id="city-ref" name="cityRef" type="hidden">
+                    <ul class="combo-list" id="city-list" role="listbox" aria-label="Список міст"></ul>
+                </div>
+            </div>
+
+            <!-- Відділення (залежить від міста) -->
+            <div class="field">
+                <label for="wh-input">Відділення Нової пошти</label>
+                <div class="combo" id="wh-combo">
+                    <input id="wh-input" type="text" placeholder="Спочатку оберіть місто" autocomplete="off" disabled>
+                    <input id="wh-ref" name="warehouseRef" type="hidden">
+                    <ul class="combo-list" id="wh-list" role="listbox" aria-label="Список відділень"></ul>
+                </div>
+            </div>
+            <div class="field">
+                <label for="ch-note">Коментар</label>
+                <textarea id="ch-note" name="note" rows="3" placeholder="Побажання до замовлення…"></textarea>
+            </div>
+
+            <div class="checkout-summary">
+                <span id="checkout-items-count">0 товарів</span>
+                <strong id="checkout-total">0 UAH</strong>
+            </div>
+
+            <button type="submit" class="cart-btn primary" id="checkout-submit">Підтвердити замовлення</button>
+        </form>
+    </div>
+</aside>
+
 
 <script>window.initMap = function(){};</script>
 

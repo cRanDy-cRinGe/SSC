@@ -85,8 +85,8 @@ body {
 /* саме коло (png/svg) — центруємо по Х, зсуваємо по Y */
 .red-circle img{
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, 38dvh);
+    left: 49%;
+    transform: translate(-50%, 50dvh);
     /* діаметр: завжди трохи більший за вьюпорт, щоб не було обрізання */
     width: clamp(600px, max(75dvw, 75dvh), 1000px);
     will-change: transform;
@@ -1589,6 +1589,46 @@ footer {
 }
 /* блокування прокрутки фону, коли кошик відкритий */
 body.no-scroll { overflow: hidden; touch-action: none; }
+/* === Checkout drawer === */
+.cart-drawer.checkout { width: min(520px, 96vw); }
+.checkout-body { padding: 12px 16px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+.checkout-form .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.checkout-form label { font-size: .9rem; color: #555; }
+.checkout-form input, .checkout-form select, .checkout-form textarea {
+    width: 100%; border: 1px solid #e3e3e3; border-radius: 10px; padding: 12px 14px; font: inherit; background:#fff;
+}
+.checkout-form input:focus, .checkout-form select:focus, .checkout-form textarea:focus { border-color: #c9c9c9; }
+.checkout-summary{ display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid #eee; border-bottom:1px solid #eee; margin:4px 0 12px; font-size:1.05rem; }
+
+/* iOS safe area + блокування скролу фону */
+.cart-drawer { height: 100dvh; height: 100svh; padding-bottom: env(safe-area-inset-bottom, 0); }
+.cart-header { padding-top: calc(16px + env(safe-area-inset-top, 0)); }
+.cart-items { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding-bottom: 12px; }
+.cart-footer { position: sticky; bottom: 0; background:#fff; box-shadow: 0 -6px 12px rgba(0,0,0,.06); padding:12px 18px max(16px, env(safe-area-inset-bottom, 0)) 18px; z-index:1; }
+body.no-scroll { overflow: hidden; touch-action: none; }
+
+/* === Combo (пошук-список) === */
+.combo { position: relative; }
+.combo input[disabled] { background: #f6f6f6; cursor: not-allowed; }
+
+.combo-list {
+    position: absolute; left: 0; right: 0; top: calc(100% + 6px);
+    max-height: 260px; overflow-y: auto;
+    background: #fff; border: 1px solid #e6e6e6; border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+    list-style: none; margin: 0; padding: 6px; display: none; z-index: 50;
+}
+.combo-list.open { display: block; }
+
+.combo-item {
+    padding: 10px 12px; border-radius: 8px; cursor: pointer; line-height: 1.2;
+}
+.combo-item small { color: #777; display:block; margin-top:2px; }
+.combo-item:hover, .combo-item.active { background: #f3f3f3; }
+
+/* Узгодження з мобільними й iOS safe-area для чекауту */
+.cart-drawer { height: 100dvh; height: 100svh; padding-bottom: env(safe-area-inset-bottom,0); }
+.cart-header { padding-top: calc(16px + env(safe-area-inset-top,0)); }
 
 /* -------- АДАПТИВНІСТЬ -------- */
 @media (max-width: 768px) {

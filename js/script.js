@@ -258,6 +258,309 @@ window.addEventListener('load', function() {
         drawer.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('no-scroll');  // ← додано
     };
+    /* ===== CHECKOUT (всередині того ж IIFE) ===== */
+    const checkoutDrawer = document.getElementById('checkout-drawer');
+    const checkoutClose  = document.getElementById('checkout-close');
+    const checkoutBack   = document.getElementById('checkout-back');
+    const checkoutForm   = document.getElementById('checkout-form');
+    const checkoutTotal  = document.getElementById('checkout-total');
+    const checkoutItems  = document.getElementById('checkout-items-count');
+
+    console.debug('[CHK] init elements', {
+        checkoutDrawer, checkoutClose, checkoutBack, checkoutForm, checkoutTotal, checkoutItems
+    });
+
+    const openCheckout = () => {
+        console.debug('[CHK] openCheckout');
+        if (!overlay || !checkoutDrawer) { console.error('[CHK] no overlay/drawer'); return; }
+        try {
+            if (checkoutTotal) checkoutTotal.textContent = fmt(Cart.subtotal());
+            if (checkoutItems) {
+                const c = Cart.count();
+                checkoutItems.textContent = c + ' ' + (c===1 ? 'товар' : (c>=2 && c<=4 ? 'товари' : 'товарів'));
+            }
+            overlay.classList.add('active');
+            checkoutDrawer.classList.add('active');
+            overlay.setAttribute('aria-hidden','false');
+            checkoutDrawer.setAttribute('aria-hidden','false');
+            document.body.classList.add('no-scroll');
+        } catch (e) {
+            console.error('[CHK] openCheckout error:', e);
+        }
+    };
+
+    const closeCheckout = () => {
+        console.debug('[CHK] closeCheckout');
+        if (!overlay || !checkoutDrawer) return;
+        overlay.classList.remove('active');
+        checkoutDrawer.classList.remove('active');
+        overlay.setAttribute('aria-hidden','true');
+        checkoutDrawer.setAttribute('aria-hidden','true');
+        document.body.classList.remove('no-scroll');
+    };
+
+// Кнопка «Оформити» у кошику → відкриває оформлення
+    if (typeof checkoutBtn !== 'undefined' && checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            console.debug('[CHK] click checkoutBtn');
+            closeDrawer();
+            openCheckout();
+        }, { once: false });
+    } else {
+        console.warn('[CHK] #cart-checkout (checkoutBtn) не знайдено');
+    }
+
+// Оверлей закриває і кошик, і оформлення
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            console.debug('[CHK] overlay click -> close drawers');
+            closeDrawer();
+            closeCheckout();
+        }, { once: false });
+    }
+
+// Кнопки «Закрити» і «Назад»
+    if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
+    if (checkoutBack)  checkoutBack.addEventListener('click', () => { closeCheckout(); openDrawer(); });
+
+    /* === Checkout → Formspree === */
+    if (checkoutForm) checkoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 1) ваш endpoint з Formspree
+        const FORMSPREE_URL = 'https://formspree.io/f/mgvngjov';
+
+        // 2) зібрати дані форми + кошика
+        const fd = new FormData(checkoutForm);
+        const cityInputEl = document.getElementById('city-input');
+        const cityRefEl   = document.getElementById('city-ref');
+        const whInputEl   = document.getElementById('wh-input');
+        const whRefEl     = document.getElementById('wh-ref');
+
+        const items = Cart.state.items.map(it => ({
+            title: it.title,
+            variant: it.variant || it.info || '',
+            qty: it.qty,
+            price: it.price,
+            sum: it.qty * it.price
+        }));
+
+        const order = {
+            _subject: '🧾 Нове замовлення з сайту',
+            name:  fd.get('name')   || '',
+            phone: fd.get('phone')  || '',
+            method: fd.get('method') || 'Нова Пошта (відділення)',
+            cityName: cityInputEl?.value || '',
+            cityRef:  cityRefEl?.value   || '',
+            warehouseLabel: whInputEl?.value || '',
+            warehouseRef:   whRefEl?.value   || '',
+            note:  fd.get('note')   || '',
+            total: Cart.subtotal(),
+            items,
+            itemsText: items.map(i => `• ${i.title}${i.variant ? ' ('+i.variant+')' : ''} × ${i.qty} = ${i.sum} UAH`).join('\n')
+        };
+
+        const btn = document.getElementById('checkout-submit');
+        const prevTxt = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = 'Надсилаємо…'; }
+        
+        try {
+            const res = await fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(order)
+            });
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(json.error || 'Formspree error');
+
+            alert('Дякуємо! Замовлення надіслано. Ми зв’яжемось з вами.');
+            Cart.clear();
+            closeCheckout();
+        } catch (err) {
+            console.error('[ORDER] send error', err);
+            alert('Не вдалось надіслати замовлення. Спробуйте ще раз або напишіть нам напряму.');
+        } finally {
+            if (btn) { btn.disabled = false; btn.textContent = prevTxt; }
+        }
+    });
+
+
+    /* ===== Nova Poshta API: міста + відділення з живим пошуком ===== */
+    const NP = {
+        KEY: '1b2d782724f192b992cdbc1d19f43a81',
+        URL: 'https://api.novaposhta.ua/v2.0/json/',
+        async call(modelName, calledMethod, methodProperties = {}) {
+            // локальні ґарди
+            if (modelName==='AddressGeneral' && calledMethod==='getCities') {
+                const s = (methodProperties.FindByString||'').trim();
+                if (!s) throw new Error('FindByString is not specified (local)');
+            }
+            if (modelName==='AddressGeneral' && calledMethod==='getWarehouses') {
+                if (!methodProperties.CityRef) throw new Error('City not found (local)');
+            }
+
+            console.debug('[NP] call', { modelName, calledMethod, methodProperties });
+            const res = await fetch(this.URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ apiKey: this.KEY, modelName, calledMethod, methodProperties })
+            });
+            if (!res.ok) throw new Error('NP HTTP ' + res.status);
+            const data = await res.json();
+            if (data.errors?.length) throw new Error(data.errors.join('; '));
+            console.debug('[NP] success', { len: (data.data||[]).length });
+            return data.data || [];
+        },
+
+        // МІСТА: спочатку з Page як РЯДОК, і fallback без Page
+        async searchCities(q, page = 1) {
+            const p = String(Math.max(1, Number(page)||1));
+            try {
+                return await NP.call('AddressGeneral', 'getCities', {
+                    FindByString: (q||'').trim(),
+                    Page: p,               // ← як рядок
+                    Limit: 100
+                });
+            } catch (e) {
+                if (String(e).includes('Page is invalid format')) {
+                    console.warn('[NP] getCities fallback (no Page)');
+                    return await NP.call('AddressGeneral', 'getCities', {
+                        FindByString: (q||'').trim(),
+                        Limit: 100
+                    });
+                }
+                throw e;
+            }
+        },
+
+        searchWarehouses: (cityRef, q) =>
+            NP.call('AddressGeneral', 'getWarehouses', {
+                CityRef: cityRef,
+                Page: '1',              // теж рядком — стабільніше
+                Limit: 100,
+                FindByString: (q||'').trim()
+            }),
+    };
+
+// DOM вузли (як у тебе)
+    const cityInput = document.getElementById('city-input');
+    const cityRef   = document.getElementById('city-ref');
+    const cityList  = document.getElementById('city-list');
+    const whInput   = document.getElementById('wh-input');
+    const whRef     = document.getElementById('wh-ref');
+    const whList    = document.getElementById('wh-list');
+
+    let selectedCity = null;
+    const norm = (s) => (s || '').toString().trim();
+    const debounce = (fn, ms=320) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
+
+    const renderList = (ul, items, toHtml) => {
+        ul.innerHTML = items.map(toHtml).join('');
+        ul.classList.toggle('open', items.length > 0);
+    };
+    const closeLists = () => { cityList?.classList.remove('open'); whList?.classList.remove('open'); };
+
+    /* === Пошук міст з довантаженням === */
+    let cityPage = 1, cityLastQuery = '', cityItems = [];
+
+    const renderCities = (rows, reset=false) => {
+        const items = rows.map(r => ({
+            cityRef: r.Ref,                                       // ← правильний CityRef
+            name: r.Description || r.DescriptionRu || '—'
+        })).filter(x => x.cityRef && x.name);
+
+        cityItems = reset ? items : cityItems.concat(items);
+        renderList(cityList, cityItems, c =>
+            `<li class="combo-item" data-city-ref="${c.cityRef}" data-name="${c.name}">${c.name}</li>`
+        );
+    };
+
+    if (cityInput) {
+        cityInput.addEventListener('input', debounce(async () => {
+            const q = norm(cityInput.value);
+            if (q.length < 2) { cityList.innerHTML=''; cityList.classList.remove('open'); return; }
+
+            cityLastQuery = q; cityPage = 1;
+            try {
+                console.debug('[NP] city search', { q, page: cityPage });
+                const rows = await NP.searchCities(q, cityPage);
+                renderCities(rows, /*reset*/true);
+
+                // скидаємо стан відділення
+                selectedCity = null; cityRef.value = '';
+                whInput.value = ''; whRef.value = '';
+                whInput.disabled = true; whList.classList.remove('open');
+            } catch (e) {
+                console.error('[NP] City search error:', e);
+                cityList.classList.remove('open');
+            }
+        }, 320));
+
+        // довантаження сторінок
+        cityList.addEventListener('scroll', async () => {
+            if (cityList.scrollTop + cityList.clientHeight >= cityList.scrollHeight - 12) {
+                try {
+                    cityPage += 1;
+                    console.debug('[NP] city load page', cityPage);
+                    const more = await NP.searchCities(cityLastQuery, cityPage);
+                    if (more.length) renderCities(more, /*reset*/false);
+                } catch (e) { console.error('[NP] city load more error:', e); }
+            }
+        });
+
+        cityList.addEventListener('click', (e) => {
+            const li = e.target.closest('.combo-item'); if (!li) return;
+            selectedCity = { ref: li.dataset.cityRef, name: li.dataset.name };
+            console.debug('[NP] city picked', selectedCity);
+            cityInput.value = selectedCity.name;
+            cityRef.value   = selectedCity.ref;
+            cityList.classList.remove('open');
+
+            whInput.disabled = false;
+            whInput.placeholder = 'Введіть № або адресу відділення…';
+            whInput.focus();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#city-combo, #wh-combo')) closeLists();
+        }, { passive: true });
+    }
+
+    /* === Пошук відділень (після вибору міста) === */
+    if (whInput) {
+        whInput.addEventListener('input', debounce(async () => {
+            if (!selectedCity?.ref) { whList.classList.remove('open'); console.debug('[NP] skip WH: no city'); return; }
+            const q = norm(whInput.value);
+            try {
+                console.debug('[NP] warehouses search', { cityRef: selectedCity.ref, q });
+                const rows = await NP.searchWarehouses(selectedCity.ref, q);
+                const items = rows.map(w => ({
+                    ref: w.Ref,
+                    number: w.Number ? `№${w.Number}` : '№?',
+                    addr: w.Description || w.ShortAddress || ''
+                }));
+                renderList(whList, items, w =>
+                    `<li class="combo-item" data-ref="${w.ref}" data-label="${w.number} — ${w.addr}">
+           <strong>${w.number}</strong><small>${w.addr}</small>
+         </li>`
+                );
+            } catch (e) {
+                console.error('[NP] Warehouse search error:', e);
+                whList.classList.remove('open');
+            }
+        }, 320));
+
+        whList.addEventListener('click', (e) => {
+            const li = e.target.closest('.combo-item'); if (!li) return;
+            whInput.value = li.dataset.label;
+            whRef.value   = li.dataset.ref;
+            whList.classList.remove('open');
+            console.debug('[NP] warehouse picked', { whRef: whRef.value, label: whInput.value });
+        });
+    }
+
+
+
 
 
     /* ===== Init ===== */
@@ -285,7 +588,7 @@ window.addEventListener('load', function() {
     // Clear / Checkout
     if (clearBtn)   clearBtn.addEventListener('click', () => Cart.clear());
     if (checkoutBtn)checkoutBtn.addEventListener('click', () => {
-        alert('Дякуємо! Оформлення замовлення — підключи свій бек або форму.');
+        
     });
 
     /* ===== Делегування для динамічних карток товарів =====
