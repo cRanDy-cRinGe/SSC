@@ -184,13 +184,18 @@ body::after {
     left: 50%;
     top: -0.25em;
     transform: translateX(-50%);
-    width: 98vw;
+    width: 96vw;
     height: 0.5em;
     border-radius: 4em;
     background-color: var(--red);
     z-index: 4;
 }
-
+@media screen and (max-width: 480px) {
+    .decoration {
+        width: 94vw;
+    }
+    
+}
 .top-bar {
     transform: translateY(-100%);
     opacity: 0;
@@ -1016,7 +1021,7 @@ body::after {
 
 
 .product-card.flip.is-flipped{
-    transform: scale(1.10);
+    transform: scale(1.05);
     z-index: 3;
     transform-origin: center center;
     transition: 0.3s;
@@ -1200,6 +1205,21 @@ body::after {
 /* картиночка без “бейслайнового” зазору */
 .product-card .media-wrap img{ display:block; width:100%; height:auto; }
 
+/* Товар відсутній */
+.product-card.is-out {
+    opacity: .55;
+    filter: grayscale(.2);
+}
+.product-card .soldout-ribbon {
+    position:absolute; top:10px; left:10px;
+    background:#222; color:#fff; font-size:.75rem;
+    padding:6px 8px; border-radius:8px;
+}
+.product-card .add-to-cart.is-out {
+    cursor: not-allowed;
+    background:#eee; color:#888; border-color:#e5e5e5;
+}
+.product-card .grind-select:disabled { background:#f6f6f6; color:#999; }
 
 /* -------- ПІДВАЛ -------- */
 footer {
