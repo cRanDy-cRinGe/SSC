@@ -555,13 +555,23 @@ function renderProducts(list = PRODUCTS) {
         else oldEl.closest('div').style.display = 'none'; // ховаємо блок, якщо немає старої ціни
         priceEl.textContent = fmtUAH(p.price);
 
-        // помел
-        const select = node.querySelector('.grind-select');
-        (p.grinds || []).forEach(g => {
-            const opt = document.createElement('option');
-            opt.textContent = g;
-            select.appendChild(opt);
-        });
+        // помел (кастомний dropdown)
+        const dropdownOptions = node.querySelector('.dropdown-options');
+        const dropdownTrigger = node.querySelector('.dropdown-trigger .current-value');
+        const container = node.querySelector('.grind-dropdown');
+
+        if (p.grinds && p.grinds.length > 0) {
+            dropdownTrigger.textContent = p.grinds[0];
+            container.dataset.value = p.grinds[0];
+
+            p.grinds.forEach((g, idx) => {
+                const opt = document.createElement('div');
+                opt.className = 'dropdown-option' + (idx === 0 ? ' selected' : '');
+                opt.textContent = g;
+                opt.dataset.value = g;
+                dropdownOptions.appendChild(opt);
+            });
+        }
 
         // back
         node.querySelector('.back-align').textContent = p.title;

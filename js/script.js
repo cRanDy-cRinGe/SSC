@@ -71,7 +71,7 @@ function startAnimations() {
     // Smooth scroll для посилань навігації
     const navLinks = document.querySelectorAll('.navigator a[href^="#"]');
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const target = document.querySelector(targetId);
@@ -108,13 +108,13 @@ document.querySelectorAll('.side-menu a').forEach(link => {
 });
 
 // Після завантаження сторінки починаємо роботу з preload-екраном
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     const preloader = document.querySelector('.preload');
     if (preloader) {
         // Додаємо клас для плавного зникнення
         preloader.classList.add('fade-out');
         // Після завершення анімації прибираємо preload і запускаємо анімації
-        preloader.addEventListener('transitionend', function() {
+        preloader.addEventListener('transitionend', function () {
             preloader.style.display = 'none';
             startAnimations();
         });
@@ -124,7 +124,7 @@ window.addEventListener('load', function() {
     }
 });
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     const preloader = document.querySelector('.preload');
     const launch = () => {
         if (preloader) preloader.style.display = 'none';
@@ -146,23 +146,23 @@ window.addEventListener('load', function() {
 (function () {
     const STORAGE_KEY = 'ssc_cart_v1';
 
-    const $  = (sel, root = document) => root.querySelector(sel);
+    const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-    const cartLink   = $('.cart-link');
-    const cartCount  = $('.cart-count');
-    const drawer     = $('#cart-drawer');
-    const overlay    = $('#cart-overlay');
-    const closeBtn   = $('#cart-close');
-    const itemsWrap  = $('#cart-items');
+    const cartLink = $('.cart-link');
+    const cartCount = $('.cart-count');
+    const drawer = $('#cart-drawer');
+    const overlay = $('#cart-overlay');
+    const closeBtn = $('#cart-close');
+    const itemsWrap = $('#cart-items');
     const subtotalEl = $('#cart-subtotal');
-    const clearBtn   = $('#cart-clear');
-    const checkoutBtn= $('#cart-checkout');
+    const clearBtn = $('#cart-clear');
+    const checkoutBtn = $('#cart-checkout');
 
     const fmt = (n) => `${Number(n).toLocaleString('uk-UA')} UAH`;
     const toNumberUAH = (str) => {
         if (!str) return 0;
-        const m = String(str).replace(/\s+/g,'').match(/(\d+([.,]\d+)?)/);
+        const m = String(str).replace(/\s+/g, '').match(/(\d+([.,]\d+)?)/);
         return m ? Number(m[1].replace(',', '.')) : 0;
     };
 
@@ -175,8 +175,8 @@ window.addEventListener('load', function() {
         },
         save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state)); },
 
-        count()   { return this.state.items.reduce((s, it) => s + it.qty, 0); },
-        subtotal(){ return this.state.items.reduce((s, it) => s + it.price * it.qty, 0); },
+        count() { return this.state.items.reduce((s, it) => s + it.qty, 0); },
+        subtotal() { return this.state.items.reduce((s, it) => s + it.price * it.qty, 0); },
 
         add(item) {
             const idx = this.state.items.findIndex(i => i.id === item.id);
@@ -260,11 +260,18 @@ window.addEventListener('load', function() {
     };
     /* ===== CHECKOUT (всередині того ж IIFE) ===== */
     const checkoutDrawer = document.getElementById('checkout-drawer');
-    const checkoutClose  = document.getElementById('checkout-close');
-    const checkoutBack   = document.getElementById('checkout-back');
-    const checkoutForm   = document.getElementById('checkout-form');
-    const checkoutTotal  = document.getElementById('checkout-total');
-    const checkoutItems  = document.getElementById('checkout-items-count');
+    const checkoutClose = document.getElementById('checkout-close');
+    const checkoutBack = document.getElementById('checkout-back');
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutTotal = document.getElementById('checkout-total');
+    const checkoutItems = document.getElementById('checkout-items-count');
+    const chPayment = document.getElementById('ch-payment');
+
+    const getFinalTotal = () => {
+        let base = Cart.subtotal();
+        if (chPayment && chPayment.value === 'cod') return Math.round(base * 1.05);
+        return base;
+    };
 
     console.debug('[CHK] init elements', {
         checkoutDrawer, checkoutClose, checkoutBack, checkoutForm, checkoutTotal, checkoutItems
@@ -274,15 +281,21 @@ window.addEventListener('load', function() {
         console.debug('[CHK] openCheckout');
         if (!overlay || !checkoutDrawer) { console.error('[CHK] no overlay/drawer'); return; }
         try {
-            if (checkoutTotal) checkoutTotal.textContent = fmt(Cart.subtotal());
+            if (checkoutTotal) checkoutTotal.textContent = fmt(getFinalTotal());
+            const notice = document.getElementById('checkout-commission-notice');
+            if (notice) {
+                notice.textContent = (chPayment && chPayment.value === 'cod')
+                    ? '*Враховано комісію 5% за накладений платіж' : '';
+            }
+
             if (checkoutItems) {
                 const c = Cart.count();
-                checkoutItems.textContent = c + ' ' + (c===1 ? 'товар' : (c>=2 && c<=4 ? 'товари' : 'товарів'));
+                checkoutItems.textContent = c + ' ' + (c === 1 ? 'товар' : (c >= 2 && c <= 4 ? 'товари' : 'товарів'));
             }
             overlay.classList.add('active');
             checkoutDrawer.classList.add('active');
-            overlay.setAttribute('aria-hidden','false');
-            checkoutDrawer.setAttribute('aria-hidden','false');
+            overlay.setAttribute('aria-hidden', 'false');
+            checkoutDrawer.setAttribute('aria-hidden', 'false');
             document.body.classList.add('no-scroll');
         } catch (e) {
             console.error('[CHK] openCheckout error:', e);
@@ -294,12 +307,12 @@ window.addEventListener('load', function() {
         if (!overlay || !checkoutDrawer) return;
         overlay.classList.remove('active');
         checkoutDrawer.classList.remove('active');
-        overlay.setAttribute('aria-hidden','true');
-        checkoutDrawer.setAttribute('aria-hidden','true');
+        overlay.setAttribute('aria-hidden', 'true');
+        checkoutDrawer.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('no-scroll');
     };
 
-// Кнопка «Оформити» у кошику → відкриває оформлення
+    // Кнопка «Оформити» у кошику → відкриває оформлення
     if (typeof checkoutBtn !== 'undefined' && checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
             console.debug('[CHK] click checkoutBtn');
@@ -310,7 +323,7 @@ window.addEventListener('load', function() {
         console.warn('[CHK] #cart-checkout (checkoutBtn) не знайдено');
     }
 
-// Оверлей закриває і кошик, і оформлення
+    // Оверлей закриває і кошик, і оформлення
     if (overlay) {
         overlay.addEventListener('click', () => {
             console.debug('[CHK] overlay click -> close drawers');
@@ -319,9 +332,20 @@ window.addEventListener('load', function() {
         }, { once: false });
     }
 
-// Кнопки «Закрити» і «Назад»
+    // Кнопки «Закрити» і «Назад»
     if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
-    if (checkoutBack)  checkoutBack.addEventListener('click', () => { closeCheckout(); openDrawer(); });
+    if (checkoutBack) checkoutBack.addEventListener('click', () => { closeCheckout(); openDrawer(); });
+
+    if (chPayment) {
+        chPayment.addEventListener('change', () => {
+            if (checkoutTotal) checkoutTotal.textContent = fmt(getFinalTotal());
+            const notice = document.getElementById('checkout-commission-notice');
+            if (notice) {
+                notice.textContent = chPayment.value === 'cod'
+                    ? '*Враховано комісію 5% за накладений платіж' : '';
+            }
+        });
+    }
 
     /* === Checkout → Formspree === */
     if (checkoutForm) checkoutForm.addEventListener('submit', async (e) => {
@@ -333,9 +357,9 @@ window.addEventListener('load', function() {
         // 2) зібрати дані форми + кошика
         const fd = new FormData(checkoutForm);
         const cityInputEl = document.getElementById('city-input');
-        const cityRefEl   = document.getElementById('city-ref');
-        const whInputEl   = document.getElementById('wh-input');
-        const whRefEl     = document.getElementById('wh-ref');
+        const cityRefEl = document.getElementById('city-ref');
+        const whInputEl = document.getElementById('wh-input');
+        const whRefEl = document.getElementById('wh-ref');
 
         const items = Cart.state.items.map(it => ({
             title: it.title,
@@ -345,25 +369,29 @@ window.addEventListener('load', function() {
             sum: it.qty * it.price
         }));
 
+        const paymentMethod = fd.get('payment') || 'liqpay';
+        const finalTotal = getFinalTotal();
+
         const order = {
             _subject: '🧾 Нове замовлення з сайту',
-            name:  fd.get('name')   || '',
-            phone: fd.get('phone')  || '',
+            name: fd.get('name') || '',
+            phone: fd.get('phone') || '',
             method: fd.get('method') || 'Нова Пошта (відділення)',
+            paymentMethod: paymentMethod === 'cod' ? 'При отриманні (+5%)' : 'LiqPay (Оплата карткою)',
             cityName: cityInputEl?.value || '',
-            cityRef:  cityRefEl?.value   || '',
+            cityRef: cityRefEl?.value || '',
             warehouseLabel: whInputEl?.value || '',
-            warehouseRef:   whRefEl?.value   || '',
-            note:  fd.get('note')   || '',
-            total: Cart.subtotal(),
+            warehouseRef: whRefEl?.value || '',
+            note: fd.get('note') || '',
+            total: finalTotal,
             items,
-            itemsText: items.map(i => `• ${i.title}${i.variant ? ' ('+i.variant+')' : ''} × ${i.qty} = ${i.sum} UAH`).join('\n')
+            itemsText: items.map(i => `• ${i.title}${i.variant ? ' (' + i.variant + ')' : ''} × ${i.qty} = ${i.sum} UAH`).join('\n')
         };
 
         const btn = document.getElementById('checkout-submit');
         const prevTxt = btn ? btn.textContent : '';
         if (btn) { btn.disabled = true; btn.textContent = 'Надсилаємо…'; }
-        
+
         try {
             const res = await fetch(FORMSPREE_URL, {
                 method: 'POST',
@@ -373,9 +401,33 @@ window.addEventListener('load', function() {
             const json = await res.json().catch(() => ({}));
             if (!res.ok) throw new Error(json.error || 'Formspree error');
 
-            alert('Дякуємо! Замовлення надіслано. Ми зв’яжемось з вами.');
             Cart.clear();
-            closeCheckout();
+
+            if (paymentMethod === 'liqpay') {
+                btn.textContent = 'Перехід до оплати...';
+                const lpRes = await fetch('php/liqpay_handler.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: finalTotal })
+                });
+                const lpData = await lpRes.json().catch(() => ({}));
+
+                if (lpData && lpData.data && lpData.signature) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'https://www.liqpay.ua/api/3/checkout';
+                    form.acceptCharset = 'utf-8';
+                    const dataInput = document.createElement('input'); dataInput.type = 'hidden'; dataInput.name = 'data'; dataInput.value = lpData.data; form.appendChild(dataInput);
+                    const sigInput = document.createElement('input'); sigInput.type = 'hidden'; sigInput.name = 'signature'; sigInput.value = lpData.signature; form.appendChild(sigInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                } else {
+                    throw new Error('LiqPay handler failed to return data');
+                }
+            } else {
+                alert('Дякуємо! Замовлення надіслано. Ми зв’яжемось з вами.');
+                closeCheckout();
+            }
         } catch (err) {
             console.error('[ORDER] send error', err);
             alert('Не вдалось надіслати замовлення. Спробуйте ще раз або напишіть нам напряму.');
@@ -391,11 +443,11 @@ window.addEventListener('load', function() {
         URL: 'https://api.novaposhta.ua/v2.0/json/',
         async call(modelName, calledMethod, methodProperties = {}) {
             // локальні ґарди
-            if (modelName==='AddressGeneral' && calledMethod==='getCities') {
-                const s = (methodProperties.FindByString||'').trim();
+            if (modelName === 'AddressGeneral' && calledMethod === 'getCities') {
+                const s = (methodProperties.FindByString || '').trim();
                 if (!s) throw new Error('FindByString is not specified (local)');
             }
-            if (modelName==='AddressGeneral' && calledMethod==='getWarehouses') {
+            if (modelName === 'AddressGeneral' && calledMethod === 'getWarehouses') {
                 if (!methodProperties.CityRef) throw new Error('City not found (local)');
             }
 
@@ -408,16 +460,16 @@ window.addEventListener('load', function() {
             if (!res.ok) throw new Error('NP HTTP ' + res.status);
             const data = await res.json();
             if (data.errors?.length) throw new Error(data.errors.join('; '));
-            console.debug('[NP] success', { len: (data.data||[]).length });
+            console.debug('[NP] success', { len: (data.data || []).length });
             return data.data || [];
         },
 
         // МІСТА: спочатку з Page як РЯДОК, і fallback без Page
         async searchCities(q, page = 1) {
-            const p = String(Math.max(1, Number(page)||1));
+            const p = String(Math.max(1, Number(page) || 1));
             try {
                 return await NP.call('AddressGeneral', 'getCities', {
-                    FindByString: (q||'').trim(),
+                    FindByString: (q || '').trim(),
                     Page: p,               // ← як рядок
                     Limit: 100
                 });
@@ -425,7 +477,7 @@ window.addEventListener('load', function() {
                 if (String(e).includes('Page is invalid format')) {
                     console.warn('[NP] getCities fallback (no Page)');
                     return await NP.call('AddressGeneral', 'getCities', {
-                        FindByString: (q||'').trim(),
+                        FindByString: (q || '').trim(),
                         Limit: 100
                     });
                 }
@@ -438,21 +490,21 @@ window.addEventListener('load', function() {
                 CityRef: cityRef,
                 Page: '1',              // теж рядком — стабільніше
                 Limit: 100,
-                FindByString: (q||'').trim()
+                FindByString: (q || '').trim()
             }),
     };
 
-// DOM вузли (як у тебе)
+    // DOM вузли (як у тебе)
     const cityInput = document.getElementById('city-input');
-    const cityRef   = document.getElementById('city-ref');
-    const cityList  = document.getElementById('city-list');
-    const whInput   = document.getElementById('wh-input');
-    const whRef     = document.getElementById('wh-ref');
-    const whList    = document.getElementById('wh-list');
+    const cityRef = document.getElementById('city-ref');
+    const cityList = document.getElementById('city-list');
+    const whInput = document.getElementById('wh-input');
+    const whRef = document.getElementById('wh-ref');
+    const whList = document.getElementById('wh-list');
 
     let selectedCity = null;
     const norm = (s) => (s || '').toString().trim();
-    const debounce = (fn, ms=320) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
+    const debounce = (fn, ms = 320) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
     const renderList = (ul, items, toHtml) => {
         ul.innerHTML = items.map(toHtml).join('');
@@ -463,7 +515,7 @@ window.addEventListener('load', function() {
     /* === Пошук міст з довантаженням === */
     let cityPage = 1, cityLastQuery = '', cityItems = [];
 
-    const renderCities = (rows, reset=false) => {
+    const renderCities = (rows, reset = false) => {
         const items = rows.map(r => ({
             cityRef: r.Ref,                                       // ← правильний CityRef
             name: r.Description || r.DescriptionRu || '—'
@@ -478,7 +530,7 @@ window.addEventListener('load', function() {
     if (cityInput) {
         cityInput.addEventListener('input', debounce(async () => {
             const q = norm(cityInput.value);
-            if (q.length < 2) { cityList.innerHTML=''; cityList.classList.remove('open'); return; }
+            if (q.length < 2) { cityList.innerHTML = ''; cityList.classList.remove('open'); return; }
 
             cityLastQuery = q; cityPage = 1;
             try {
@@ -513,7 +565,7 @@ window.addEventListener('load', function() {
             selectedCity = { ref: li.dataset.cityRef, name: li.dataset.name };
             console.debug('[NP] city picked', selectedCity);
             cityInput.value = selectedCity.name;
-            cityRef.value   = selectedCity.ref;
+            cityRef.value = selectedCity.ref;
             cityList.classList.remove('open');
 
             whInput.disabled = false;
@@ -553,7 +605,7 @@ window.addEventListener('load', function() {
         whList.addEventListener('click', (e) => {
             const li = e.target.closest('.combo-item'); if (!li) return;
             whInput.value = li.dataset.label;
-            whRef.value   = li.dataset.ref;
+            whRef.value = li.dataset.ref;
             whList.classList.remove('open');
             console.debug('[NP] warehouse picked', { whRef: whRef.value, label: whInput.value });
         });
@@ -569,7 +621,7 @@ window.addEventListener('load', function() {
 
     // Toggle by header cart button
     if (cartLink) cartLink.addEventListener('click', (e) => { e.preventDefault(); openDrawer(); });
-    if (overlay)  overlay.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
@@ -579,16 +631,16 @@ window.addEventListener('load', function() {
             const root = e.target.closest('.cart-item');
             if (!root) return;
             const id = root.dataset.id;
-            if (e.target.matches('.c-plus'))  Cart.updateQty(id, +1);
+            if (e.target.matches('.c-plus')) Cart.updateQty(id, +1);
             if (e.target.matches('.c-minus')) Cart.updateQty(id, -1);
             if (e.target.matches('.cart-remove')) Cart.remove(id);
         });
     }
 
     // Clear / Checkout
-    if (clearBtn)   clearBtn.addEventListener('click', () => Cart.clear());
-    if (checkoutBtn)checkoutBtn.addEventListener('click', () => {
-        
+    if (clearBtn) clearBtn.addEventListener('click', () => Cart.clear());
+    if (checkoutBtn) checkoutBtn.addEventListener('click', () => {
+
     });
 
     /* ===== Делегування для динамічних карток товарів =====
@@ -626,15 +678,16 @@ window.addEventListener('load', function() {
 
         // додати в кошик
         if (e.target.matches('.add-to-cart') && !e.target.disabled) {
-            const title  = $('.product-title', card)?.textContent?.trim() || 'Товар';
-            const price  = getCardPrice(card);
-            const qty    = getCardQty(card);
-            const grind  = $('.grind-select', card)?.value || '';
+            const title = $('.product-title', card)?.textContent?.trim() || 'Товар';
+            const price = getCardPrice(card);
+            const qty = getCardQty(card);
+            const grind = $('.grind-dropdown', card)?.dataset.value || '';
             const weight = $('.weight', card)?.textContent?.trim() || '';
-            const image  = $('.product-image', card)?.getAttribute('src') || '';
-            const id     = slugifyId({ title, image, weight, grind });
+            const image = $('.product-image', card)?.getAttribute('src') || '';
+            const id = slugifyId({ title, image, weight, grind });
 
             Cart.add({ id, title, price, qty, grind, weight, image });
+            showToast(`${title} додано в кошик`);
 
             if (cartCount) {
                 cartCount.classList.add('pulse');
@@ -642,6 +695,20 @@ window.addEventListener('load', function() {
             }
         }
     });
+
+    function showToast(text) {
+        const toast = document.getElementById('toast-notify');
+        const toastText = toast.querySelector('.toast-text');
+        if (!toast) return;
+
+        if (text) toastText.textContent = text;
+        toast.classList.add('show');
+
+        clearTimeout(toast.timer);
+        toast.timer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
 })();
 
 
@@ -679,6 +746,41 @@ window.addEventListener('load', function() {
 })();
 
 
+
+/* ===== CUSTOM DROPDOWN INTERACTION ===== */
+document.addEventListener('click', (e) => {
+    // Закриття всіх відкритих списків при кліку поза ними
+    if (!e.target.closest('.grind-dropdown')) {
+        document.querySelectorAll('.grind-dropdown.open').forEach(el => el.classList.remove('open'));
+    }
+
+    const dropdown = e.target.closest('.grind-dropdown');
+    if (!dropdown) return;
+
+    const trigger = e.target.closest('.dropdown-trigger');
+    const option = e.target.closest('.dropdown-option');
+
+    if (trigger) {
+        // Перемикання списку
+        const isOpen = dropdown.classList.contains('open');
+        document.querySelectorAll('.grind-dropdown.open').forEach(el => el.classList.remove('open'));
+        if (!isOpen) dropdown.classList.add('open');
+    }
+
+    if (option) {
+        // Вибір опції
+        const val = option.dataset.value;
+        const triggerSpan = dropdown.querySelector('.current-value');
+
+        dropdown.dataset.value = val;
+        if (triggerSpan) triggerSpan.textContent = val;
+
+        dropdown.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        dropdown.classList.remove('open');
+    }
+});
 
 document.addEventListener('products:rendered', attachProductObserver);
 
